@@ -140,6 +140,7 @@ function dotStyle(color: string): React.CSSProperties {
     flexShrink: 0,
   } as React.CSSProperties;
 }
+const landlordAppUrl = import.meta.env.VITE_LANDLORD_APP_URL?.trim();
 
 export default function HomePage() {
 
@@ -195,7 +196,7 @@ export default function HomePage() {
 
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
             <Button
-              onClick={() => navigate('/landlord')}
+              onClick={() => window.open(landlordAppUrl, '_blank')}
               type="primary" size="large"
               icon={<ArrowRightOutlined />}
               style={{ background: AMBER, borderColor: AMBER, color: NAVY, fontWeight: 700, height: 48, padding: "0 28px", fontSize: 15 }}
@@ -405,7 +406,7 @@ export default function HomePage() {
           </Paragraph>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <Button
-              onClick={() => navigate('/landlord')}
+              onClick={() => window.open(landlordAppUrl, '_blank')}
               type="primary" size="large"
               icon={<ArrowRightOutlined />}
               style={{ background: AMBER, borderColor: AMBER, color: NAVY, fontWeight: 700, height: 50, padding: "0 32px", fontSize: 15 }}
