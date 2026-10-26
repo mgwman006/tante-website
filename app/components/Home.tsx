@@ -8,11 +8,12 @@ const { Title, Text, } = Typography;
 const { Header, Footer, Content } = Layout;
 const { useBreakpoint } = Grid;
 
+const landlordAppUrl = import.meta.env.VITE_LANDLORD_APP_URL?.trim();
 
 const navItems = [
   { key: 'home', label: 'Home', to: '/' },
-  { key: 'landlord', label: 'For Landlords', to: '/landlord' },
-  { key: 'tenants', label: 'For Tenants', to: '#' },
+  { key: 'landlord', label: 'For Landlords', to: landlordAppUrl || '#'},
+  //{ key: 'tenants', label: 'For Tenants', to: '#' },
   // { key: 'about', label: 'About Us', to: '/' },
   // { key: 'contact', label: 'Contact', to: '/' },
 ];
@@ -21,7 +22,6 @@ export default function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const screens = useBreakpoint();
   const isMobile = !screens.md; // <768px = mobile
-  const navigate = useNavigate();
 
   return (
     <Layout>
@@ -60,9 +60,11 @@ export default function AppLayout() {
         {!isMobile && (
           <nav style={{ display: 'flex', gap: 4, flex: 1, padding: '0 16px' }}>
             {navItems.map(item => (
-              <Link
+              <a
                 key={item.key}
-                to={item.to}
+                href={item.to}
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   padding: '7px 14px',
                   borderRadius: 8,
@@ -76,7 +78,7 @@ export default function AppLayout() {
                 onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
           </nav>
         )}
@@ -85,7 +87,7 @@ export default function AppLayout() {
         {!isMobile && (
           <div style={{ display: 'flex', gap: 8, padding: '0 24px', flexShrink: 0 }}>
             <Button
-              onClick={() => navigate('/landlord')}
+              onClick={() => window.open(landlordAppUrl, '_blank')}
               type="primary"
               style={{ background: '#0F766E', borderColor: '#0F766E', fontWeight: 700, fontSize: 13 }}
             >
@@ -121,9 +123,11 @@ export default function AppLayout() {
         styles={{ body: { padding: 0 } }}
       >
         {navItems.map(item => (
-          <Link
+          <a
             key={item.key}
-            to={item.to}
+            href={item.to}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={() => setDrawerOpen(false)}
             style={{
               display: 'block',
@@ -136,14 +140,14 @@ export default function AppLayout() {
             }}
           >
             {item.label}
-          </Link>
+          </a>
         ))}
         <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <Button
             block
             type="primary"
             style={{ background: '#0F766E', borderColor: '#0F766E', fontWeight: 700 }}
-            onClick={() => navigate('/landlord')}
+            onClick={() => window.open(landlordAppUrl, '_blank')}
           >
             Get Started Free →
           </Button>
