@@ -9,11 +9,13 @@ const { Header, Footer, Content } = Layout;
 const { useBreakpoint } = Grid;
 
 const landlordAppUrl = import.meta.env.VITE_LANDLORD_APP_URL?.trim();
+const tenantAppUrl = import.meta.env.VITE_TENANT_APP_URL?.trim();
+
 
 const navItems = [
   { key: 'home', label: 'Home', to: '/' },
   { key: 'landlord', label: 'For Landlords', to: landlordAppUrl || '#'},
-  //{ key: 'tenants', label: 'For Tenants', to: '#' },
+  { key: 'tenants', label: 'For Tenants', to: tenantAppUrl || '#'},
   // { key: 'about', label: 'About Us', to: '/' },
   // { key: 'contact', label: 'Contact', to: '/' },
 ];
