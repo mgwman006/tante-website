@@ -1,316 +1,165 @@
-import { Typography,Layout, Image, Grid, Drawer, Button, Card, Row, Divider, Col, Space, Tag, Flex } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { MenuOutlined } from "@ant-design/icons";
+import { Button, Drawer, Grid, Layout, Typography } from "antd";
+import { Link, Outlet } from "react-router-dom";
+import { useState } from "react";
 
-const { Title, Text, } = Typography;
-
-const { Header, Footer, Content } = Layout;
+const { Header, Content, Footer } = Layout;
+const { Text } = Typography;
 const { useBreakpoint } = Grid;
 
 const landlordAppUrl = import.meta.env.VITE_LANDLORD_APP_URL?.trim();
 const tenantAppUrl = import.meta.env.VITE_TENANT_APP_URL?.trim();
 
-
-const navItems = [
-  { key: 'home', label: 'Home', to: '/' },
-  { key: 'landlord', label: 'For Landlords', to: landlordAppUrl || '#'},
-  { key: 'tenants', label: 'For Tenants', to: tenantAppUrl || '#'},
-  // { key: 'about', label: 'About Us', to: '/' },
-  // { key: 'contact', label: 'Contact', to: '/' },
+const footerGroups = [
+  {
+    title: "For Tenants",
+    links: ["Find a Rental", "How It Works", "FAQs"],
+  },
+  {
+    title: "For Landlords",
+    links: ["Manage Properties", "Rent Collection", "Support"],
+  },
+  {
+    title: "For Agents",
+    links: ["List Properties", "Manage Viewings", "Support"],
+  },
+  {
+    title: "About",
+    links: ["Our Mission", "Contact Us", "Blog"],
+  },
 ];
 
 export default function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const screens = useBreakpoint();
-  const isMobile = !screens.md; // <768px = mobile
+  const isMobile = !screens.md;
+  const navLinks = [
+    { label: "Home", href: "/", active: true },
+    { label: "Find a Rental", href: tenantAppUrl || "#quick-search" },
+    { label: "For Landlords", href: landlordAppUrl || "#" },
+    { label: "For Agents", href: landlordAppUrl || "#" },
+  ];
 
   return (
-    <Layout>
-      <Header
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-          width: '100%',
-          padding: 0,
-          display: 'flex',
-          alignItems: 'center',
-          background: '#0F172A',
-          height: 64,
-        }}
-      >
-        {/* LOGO */}
-        <div style={{
-          background: '#fff',
-          height: 64,
-          display: 'flex',
-          alignItems: 'center',
-          padding: '0 16px',
-          flexShrink: 0,
-        }}>
-          <Image
-            preview={false}
-            src="/tante-logo.svg"
-            width={96}          // fixed px — never grows
-            height={29}         // keeps aspect ratio locked
-            style={{ display: 'block' }}
-          />
-        </div>
+    <Layout className="site-layout">
+      <Header className="site-header">
+        <Link className="site-brand" to="/" aria-label="Tante home">
+          tante<span>.</span>
+        </Link>
 
-        {/* DESKTOP NAV */}
-        {!isMobile && (
-          <nav style={{ display: 'flex', gap: 4, flex: 1, padding: '0 16px' }}>
-            {navItems.map(item => (
+        {!isMobile ? (
+          <>
+            <nav className="site-nav" aria-label="Main navigation">
+              {navLinks.map((item) => (
+                <a
+                  key={item.label}
+                  className={item.active ? "site-nav__link is-active" : "site-nav__link"}
+                  href={item.href}
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+            <div className="site-header__actions">
               <a
-                key={item.key}
-                href={item.to}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  padding: '7px 14px',
-                  borderRadius: 8,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: 'rgba(255,255,255,0.6)',
-                  textDecoration: 'none',
-                  transition: 'all .15s',
-                }}
-                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.6)'}
+                className="site-sign-in"
+                href={tenantAppUrl || "#"}
+                target={tenantAppUrl ? "_blank" : undefined}
+                rel={tenantAppUrl ? "noreferrer" : undefined}
               >
-                {item.label}
+                Sign In
               </a>
-            ))}
-          </nav>
-        )}
-
-        {/* DESKTOP CTA BUTTONS */}
-        {!isMobile && (
-          <div style={{ display: 'flex', gap: 8, padding: '0 24px', flexShrink: 0 }}>
-            <Button
-              onClick={() => window.open(landlordAppUrl, '_blank')}
-              type="primary"
-              style={{ background: '#0F766E', borderColor: '#0F766E', fontWeight: 700, fontSize: 13 }}
-            >
-              Get Started
-            </Button>
-          </div>
-        )}
-
-        {/* MOBILE HAMBURGER */}
-        {isMobile && (
-          <div style={{ marginLeft: 'auto', paddingRight: 16 }}>
-            <Button
-              type="text"
-              icon={<MenuOutlined style={{ color: '#fff', fontSize: 18 }} />}
-              onClick={() => setDrawerOpen(true)}
-            />
-          </div>
+              <Button
+                className="site-get-started"
+                href={landlordAppUrl || "#"}
+                target={landlordAppUrl ? "_blank" : undefined}
+                rel={landlordAppUrl ? "noreferrer" : undefined}
+              >
+                Get Started
+              </Button>
+            </div>
+          </>
+        ) : (
+          <Button
+            className="site-menu-button"
+            type="text"
+            aria-label="Open navigation menu"
+            icon={<MenuOutlined />}
+            onClick={() => setDrawerOpen(true)}
+          />
         )}
       </Header>
 
-      {/* MOBILE DRAWER */}
       <Drawer
-        title={
-          <span style={{ fontWeight: 900, fontSize: 20 }}>
-            <span style={{ color: '#14B8A6' }}>t</span>
-            <span style={{ color: '#0F172A' }}>ante</span>
-          </span>
-        }
+        title={<span className="drawer-brand">tante<span>.</span></span>}
         placement="right"
-        onClose={() => setDrawerOpen(false)}
         open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
         width={280}
-        styles={{ body: { padding: 0 } }}
       >
-        {navItems.map(item => (
-          <a
-            key={item.key}
-            href={item.to}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setDrawerOpen(false)}
-            style={{
-              display: 'block',
-              padding: '14px 24px',
-              fontSize: 15,
-              fontWeight: 600,
-              color: '#0F172A',
-              borderBottom: '1px solid #f1f5f9',
-              textDecoration: 'none',
-            }}
-          >
-            {item.label}
-          </a>
-        ))}
-        <div style={{ padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <nav className="mobile-nav" aria-label="Mobile navigation">
+          {navLinks.map((item) => (
+            <a key={item.label} href={item.href} onClick={() => setDrawerOpen(false)}>
+              {item.label}
+            </a>
+          ))}
+          <a href={tenantAppUrl || "#"} onClick={() => setDrawerOpen(false)}>Sign In</a>
           <Button
-            block
             type="primary"
-            style={{ background: '#0F766E', borderColor: '#0F766E', fontWeight: 700 }}
-            onClick={() => window.open(landlordAppUrl, '_blank')}
+            href={landlordAppUrl || "#"}
+            onClick={() => setDrawerOpen(false)}
           >
-            Get Started Free →
+            Get Started
           </Button>
-        </div>
+        </nav>
       </Drawer>
 
-      <Content style={{ backgroundColor: '#fff' }}>
+      <Content>
         <Outlet />
       </Content>
 
-      <Footer style={{ backgroundColor: '#0F172A' }}>
-       
-          {/* Top Grid */}
-          <Row gutter={[32, 32]}>
-            {/* Brand */}
-            <Col xs={24} sm={12} md={12} lg={6}>
-              <Title level={2} style={{ margin: 0, color: "white" }}>
-                <span style={{ color: "#14b8a6" }}>t</span>ante
-              </Title>
+      <section className="site-footer-main">
+        <div className="site-footer__inner">
+          <div className="site-footer__brand">
+            <Link className="site-brand site-brand--footer" to="/">
+              tante<span>.</span>
+            </Link>
+            <Text>Better rental relationships.<br />Together.</Text>
+          </div>
+          <div className="site-footer__groups">
+            {footerGroups.map((group) => (
+              <div className="site-footer__group" key={group.title}>
+                <Text strong>{group.title}</Text>
+                {group.links.map((label) => (
+                  <a
+                    key={label}
+                    href={
+                      group.title === "For Tenants"
+                        ? tenantAppUrl || "#"
+                        : group.title === "For Landlords" || group.title === "For Agents"
+                          ? landlordAppUrl || "#"
+                          : "#"
+                    }
+                  >
+                    {label}
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <Text style={{ color: "#94a3b8", display: "block", marginTop: 16 }}>
-                Smart Real Estate. Better Future.
-                <br />
-                Built for Tanzanian property owners.
-              </Text>
-            </Col>
-
-            {/* Product */}
-            <Col xs={24} sm={12} md={12} lg={6}>
-              <Flex vertical>
-                <Text strong style={{ color: "#64748b" }}>
-                  PRODUCT
-                </Text>
-                <Flex vertical style={{ marginTop: 10 }}>
-                  <Link 
-                    to="#"    
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                      Features
-                  </Link>
-                  <Link 
-                    to="#"
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                    Pricing
-                  </Link>
-                  <Link 
-                    to="#"
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                    Mobile App
-                  </Link>
-                  <Link 
-                    to="#"
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                    Changelog
-                  </Link>
-                </Flex>
-              </Flex>
-            </Col>
-
-            {/* Company */}
-            <Col xs={24} sm={12} md={12} lg={6}>
-              <Flex vertical>
-                <Text strong style={{ color: "#64748b" }}>
-                  COMPANY
-                </Text>
-                <Flex vertical style={{ marginTop: 10 }}>
-                  <Link 
-                    to="#"    
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                      Blog
-                  </Link>
-                  <Link 
-                    to="#"
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                    Careers
-                  </Link>
-                  <Link 
-                    to="#"
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                    Contact
-                  </Link>
-                </Flex>
-              </Flex>
-            </Col>
-
-            {/* Legal */}
-            <Col xs={24} sm={12} md={12} lg={6}>
-              <Flex vertical>
-                <Text strong style={{ color: "#64748b" }}>
-                  LEGAL
-                </Text>
-                <Flex vertical style={{ marginTop: 10 }}>
-                  <Link 
-                    to="#"    
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                      Privacy Policy
-                  </Link>
-                  <Link 
-                    to="#"
-                    style={{
-                      color: "#94a3b8",
-                      marginTop:2
-                    }}
-                  >
-                    Terms of Service
-                  </Link>
-                  
-                </Flex>
-              </Flex>
-              
-            </Col>
-          </Row>
-
-          {/* Bottom */}
-          <Divider style={{ borderColor: "#1e293b", margin: "32px 0 24px" }} />
-
-          <Row gutter={[16, 16]} justify="space-between" align="middle">
-            <Col xs={24} md={12}>
-              <Text style={{ color: "#64748b" }}>
-                © 2026 Tante Software Limited (Pty) Ltd. All rights reserved.
-              </Text>
-            </Col>
-
-            <Col xs={24} md={12}>
-              <Space wrap style={{ justifyContent: "flex-end", width: "100%" }}>
-                <Tag color="default">🇹🇿 Made in Tanzania</Tag>
-                {/* <Tag color="cyan">POPIA Compliant</Tag> */}
-              </Space>
-            </Col>
-          </Row>
+      <Footer className="site-footer-bottom">
+        <Text>© 2025 Tante. All rights reserved.</Text>
+        <div className="site-footer__socials" aria-label="Social media">
+          <a href="https://www.facebook.com/" aria-label="Facebook">f</a>
+          <a href="https://www.x.com/" aria-label="X">𝕏</a>
+          <a href="https://www.linkedin.com/" aria-label="LinkedIn">in</a>
+          <a href="https://www.youtube.com/" aria-label="YouTube">▶</a>
+        </div>
       </Footer>
     </Layout>
   );
