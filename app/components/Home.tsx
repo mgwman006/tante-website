@@ -157,7 +157,7 @@ export default function AppLayout() {
         <div className="site-footer__socials" aria-label="Social media">
           <a href="https://www.facebook.com/" aria-label="Facebook">f</a>
           <a href="https://www.x.com/" aria-label="X">𝕏</a>
-          <a href="https://www.linkedin.com/" aria-label="LinkedIn">in</a>
+          <a href="https://www.linkedin.com/company/tantesoftwarelimited/" aria-label="LinkedIn">in</a>
           <a href="https://www.youtube.com/" aria-label="YouTube">▶</a>
         </div>
       </Footer>

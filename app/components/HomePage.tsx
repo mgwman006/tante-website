@@ -60,6 +60,7 @@ export default function HomePage() {
   return (
     <main>
       <section className="home-hero">
+        <img className="home-hero__image" src="/hero-bg.avif" alt="" />
         <div className="home-hero__content">
           <Title className="home-hero__title">
             Find your next place.
@@ -145,9 +146,6 @@ export default function HomePage() {
                 className="home-search__submit"
                 type="primary"
                 icon={<SearchOutlined />}
-                href={tenantAppUrl || undefined}
-                target={tenantAppUrl ? "_blank" : undefined}
-                rel={tenantAppUrl ? "noreferrer" : undefined}
               >
                 Search
               </Button>
