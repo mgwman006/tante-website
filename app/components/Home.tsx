@@ -35,7 +35,7 @@ export default function AppLayout() {
   const isMobile = !screens.md;
   const navLinks = [
     { label: "Home", href: "/", active: true },
-    { label: "Find a Rental", href: tenantAppUrl || "#quick-search" },
+    { label: "For Tenants", href: tenantAppUrl || "#quick-search" },
     { label: "For Landlords", href: landlordAppUrl || "#" },
     { label: "For Agents", href: landlordAppUrl || "#" },
   ];
